@@ -50,7 +50,7 @@ clasificacion_safe = {
 
 
 # --- Configuración inicial ---
-st.title("Análisis de Datos Automátizado")
+st.title("Carga de Archivos")
 
 # --- API Key y modelo ---
 model = cargar_api_gemini()
@@ -118,7 +118,7 @@ else:
 
 # Perfilado de los datos inicial
 if st.session_state.get('pasar_a_perfilado') == True:
-    st.title("Preprocesamiento de Datos")
+    st.title("Análisis Exploratorio de Datos")
     st.subheader("Clasificación de variables por archivo")
 
     # Clasificación de variables
