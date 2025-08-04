@@ -8,6 +8,13 @@ import numpy as np
 from modules.load import filtrar_duplicados, leer_archivos
 from modules.preprocessing import clasificar_variables, describir_archivo, generar_perfilado, mostrar_outliers
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.decomposition import PCA
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from modules.preprocessing import mostrar_outliers
 
 
 st.set_page_config(page_title="Análista de Datos", layout="centered", initial_sidebar_state="expanded")
@@ -51,14 +58,15 @@ clasificacion_safe = {
 }
 
 # --- Configuración inicial ---
-st.title("Carga de Archivos")
+st.title("Análisis Automático de Datos")
+st.subheader("Acá va una descripción breve del proyecto o de la aplicación.")
 
 # --- API Key y modelo ---
 model = cargar_api_gemini()
-
+st.session_state['model'] = model
 # --- SECCIÓN DE CARGA DE ARCHIVOS ---
 
-# --- Carga de archivos ---
+_ = """ # --- Carga de archivos ---
 uploaded_files = st.file_uploader(
     "Carga tu archivo CSV o Excel", 
     type=["csv", "xlsx"], 
@@ -78,13 +86,11 @@ if uploaded_files:
             st.subheader("Selecciona los archivos para analizar")
 
             st.markdown(
-                """
-                A continuación, seleccione los archivos que desea incluir en el análisis conjunto.
+                "A continuación, seleccione los archivos que desea incluir en el análisis conjunto."
 
-                **Recomendación:** Seleccione archivos que estén relacionados entre sí, es decir, que compartan claves comunes, tengan la misma estructura o puedan combinarse sin problemas.
+                "**Recomendación:** Seleccione archivos que estén relacionados entre sí, es decir, que compartan claves comunes, tengan la misma estructura o puedan combinarse sin problemas."
 
-                **Nota:** Los archivos que no sean seleccionados serán excluidos del análisis.
-                """
+                "**Nota:** Los archivos que no sean seleccionados serán excluidos del análisis."
             )
 
             seleccionados = st.multiselect(
@@ -162,14 +168,14 @@ if st.session_state.get('pasar_a_perfilado') == True:
             )
 
             # Generar perfilado usando la función
-            _ = """ with st.spinner("Generando reporte de perfilado..."):
+             with st.spinner("Generando reporte de perfilado..."):
                 profile = generar_perfilado(df, clasificacion)
                 if profile:
                     st.markdown("#### Perfilado Inicial de Datos")
                     st.components.v1.html(profile.to_html(), height=600, scrolling=True)
                     # correlaciones = profile.get_description().correlations # así se accede a las correlaciones
                 else:
-                    st.warning(f"No se pudo generar el perfilado para {nombre}") """
+                    st.warning(f"No se pudo generar el perfilado para {nombre}")
         else:
             st.warning(f"No se pudieron clasificar las variables de {nombre}")
 
@@ -241,12 +247,7 @@ if st.session_state.get('pasar_a_limpieza') == True:
 else:
     st.session_state['pasar_a_analisis'] = False
 
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+
 
 # --- Análisis de los datos ---
 if st.session_state.get('pasar_a_analisis') == True:
@@ -344,3 +345,5 @@ if st.session_state.get('pasar_a_analisis') == True:
             st.success(f"Codificación y estandarización completadas para el archivo: {nombre}")
         except Exception as e:
             st.error(f"Error al procesar el archivo '{nombre}': {e}")
+
+ """
