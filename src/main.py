@@ -2,20 +2,6 @@ import streamlit as st
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
-import pandas as pd
-import numpy as np
-
-from modules.load import filtrar_duplicados, leer_archivos
-from modules.preprocessing import clasificar_variables, describir_archivo, generar_perfilado, mostrar_outliers
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.decomposition import PCA
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from modules.preprocessing import mostrar_outliers
-
 
 st.set_page_config(page_title="Análista de Datos", layout="centered", initial_sidebar_state="expanded")
 

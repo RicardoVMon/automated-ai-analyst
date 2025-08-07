@@ -30,7 +30,6 @@ def leer_archivos(lista_archivos, archivos_sesion=None):
             }
     return archivos
 
-
 def filtrar_duplicados(archivos_cargados):
     unique_files = []
     seen = set()

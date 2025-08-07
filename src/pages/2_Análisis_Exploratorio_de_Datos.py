@@ -1,6 +1,5 @@
 import streamlit as st, pandas as pd
 from modules.preprocessing import describir_archivo, clasificar_variables, generar_perfilado
-import time
 
 model = st.session_state.get('model', None)
 
@@ -43,8 +42,8 @@ if st.session_state.get('pasar_a_perfilado') == True:
         if datos.get('descripcion') is None:
             with st.spinner("Describiendo archivo..."):
                 try:
-                    descripcion = describir_archivo(df, model)
-                    # descripcion = descripcion_safe  # Usar descripción segura para pruebas
+                    # descripcion = describir_archivo(df, model)
+                    descripcion = descripcion_safe  # Usar descripción segura para pruebas
                     st.session_state['archivos'][nombre]['descripcion'] = descripcion
                 except Exception as e:
                     st.error(f"Error al describir el archivo de {nombre}: {e}")
@@ -55,8 +54,8 @@ if st.session_state.get('pasar_a_perfilado') == True:
         if datos.get('clasificacion') is None:
             with st.spinner("Clasificando variables..."):
                 try:
-                    clasificacion = clasificar_variables(df, model)
-                    # clasificacion = clasificacion_safe  # Usar clasificación segura para pruebas
+                    # clasificacion = clasificar_variables(df, model)
+                    clasificacion = clasificacion_safe  # Usar clasificación segura para pruebas
                     st.session_state['archivos'][nombre]['clasificacion'] = clasificacion
                 except Exception as e:
                     st.error(f"Error al clasificar variables de {nombre}: {e}")
