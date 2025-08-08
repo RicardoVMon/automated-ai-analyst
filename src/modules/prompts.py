@@ -56,8 +56,7 @@ def prompt_generar_insights(insights):
 
         El formato debe ser:
         - En bullet points de Markdown (`-`)
-        - Cada frase debe tener una extensión similar a:  
-        "El hecho de que los valores de CO y SO2 también presenten outliers indica posibles eventos extremos o fuentes puntuales de contaminación."
+        - Cada frase debe tener una extensión similar a 40 palabras:  
         - No des más de 8 insights
 
         Aquí está el resumen del dataset:

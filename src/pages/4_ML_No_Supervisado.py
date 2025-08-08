@@ -3,8 +3,6 @@ import pandas as pd
 import numpy as np
 from modules.ml import generar_insights, generar_insights_ia, aplicar_kmeans, aplicar_dbscan, visualizar_clustering
 
-
-
 # --- Punto de entrada ---
 if st.session_state.get('pasar_a_analisis') == True:
     st.title("Análisis de Aprendizaje No Supervisado")
@@ -12,10 +10,8 @@ if st.session_state.get('pasar_a_analisis') == True:
 
     for nombre, datos in st.session_state['archivos'].items():
         
-        df = datos['dataframe_final']
-        df_final = df.copy()
-        columnas_finales = df.select_dtypes(include=[np.number]).columns.tolist()
-        print("Columnas finales:", columnas_finales)
+        df_final = datos['dataframe_final']
+        columnas_finales = df_final.select_dtypes(include=[np.number]).columns.tolist()
         clasificacion = datos.get('clasificacion', {})
 
         st.markdown(f"### Archivo: `{nombre}`")
@@ -67,7 +63,7 @@ if st.session_state.get('pasar_a_analisis') == True:
             visualizar_clustering(df_final, clusters_kmeans, clusters_dbscan, vars_clustering, nombre)
 
             # Generar insights automáticos
-            st.markdown("#### Insights Automáticos para IA")
+            st.markdown("#### Conclusiones Finales")
             
             if st.button(f"Generar Insights", key=f"insights_{nombre}"):
                 with st.spinner("Generando insights..."):
@@ -82,7 +78,6 @@ if st.session_state.get('pasar_a_analisis') == True:
                     st.success(f"Generados {len(insights)} insights")
                     
                     # Crear DataFrame para mostrar insights
-                    print("Insights:", insights )
                     insights_df = pd.DataFrame({
                         'Tipo_Insight': [insight.split(':')[0] for insight in insights],
                         'Valor': [':'.join(insight.split(':')[1:]).strip() if ':' in insight else insight for insight in insights]
@@ -92,15 +87,18 @@ if st.session_state.get('pasar_a_analisis') == True:
                     
                     # Exportar insights como texto plano para IA
                     insights_texto = "\n".join(insights)
+                    st.session_state['insights_finales'] = insights_texto
                     insights = generar_insights_ia(insights_texto, st.session_state['model'])
                     st.markdown("#### Insights Generados por IA")
                     st.markdown(insights)
             
             # Guardar dataframe final
-            st.session_state['archivos'][nombre]['dataframe_clustering'] = df
+            st.session_state['archivos'][nombre]['dataframe_clustering'] = df_final
             
         else:
             st.warning("Selecciona al menos 2 variables para clustering")
+    st.session_state['pasar_a_q&a'] = True
 
 else:
     st.warning("Primero completa la sección de Limpieza de Datos.")
+    st.session_state['pasar_a_q&a'] = False

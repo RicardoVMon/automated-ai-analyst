@@ -92,6 +92,7 @@ def generar_insights(df, clusters_kmeans, clusters_dbscan, columnas_numericas, n
     insights.append(f"VARIABLES_NUMERICAS: {len(columnas_numericas)}")
     insights.append(f"VARIABLES_ANALIZADAS: {', '.join(columnas_numericas)}")
     
+
     # Análisis de K-means
     n_clusters_kmeans = len(set(clusters_kmeans))
     insights.append(f"KMEANS_CLUSTERS: {n_clusters_kmeans}")
@@ -124,6 +125,7 @@ def generar_insights(df, clusters_kmeans, clusters_dbscan, columnas_numericas, n
     
     # Análisis de correlaciones
     correlaciones = df[columnas_numericas].corr()
+    print(correlaciones)
     correlaciones_altas = []
     
     for i in range(len(correlaciones.columns)):
