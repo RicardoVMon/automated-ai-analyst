@@ -9,4 +9,4 @@ python-dotenv
 ydata_profiling
 scipy
 google-generativeai
-pkg_resources
+setuptools
