@@ -4,15 +4,17 @@ from modules.qa import inicializar_chat, enviar_mensaje_inicial, procesar_mensaj
 
 # --- PUNTO DE ENTRADA ---
 if st.session_state.get('pasar_a_q&a') == True:
-    st.title("Chat con Análisis de Datos")
+    st.title("Asistente de Análisis de Datos")
     st.markdown("Pregunta sobre los resultados de tu análisis de clustering y outliers")
     
-    # Verificar si hay insights disponibles
-    if 'insights_finales' not in st.session_state or not st.session_state['insights_finales']:
-        st.error("No hay análisis disponible")
-        st.markdown("Por favor, completa primero el análisis en la sección anterior.")
-        st.stop()
-    
+    # Reiniciar chat si el flag está activo
+    if st.session_state.get('reiniciar_chat', False):
+        for key in ['chat_iniciado', 'chat_history']:
+            if key in st.session_state:
+                del st.session_state[key]
+        st.session_state['reiniciar_chat'] = False
+        st.rerun()
+
     # Inicializar chat
     inicializar_chat()
     
@@ -51,4 +53,3 @@ if st.session_state.get('pasar_a_q&a') == True:
                     st.error(f"{response}")
 else:
     st.warning("Primero completa el análisis de clustering en la sección anterior.")
-    st.markdown("Una vez que hayas generado los insights, podrás acceder al chat.")

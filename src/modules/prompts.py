@@ -21,7 +21,7 @@ def prompt_clasificacion_variables(df):
 
         Devuelve la clasificación en formato:
 
-        Columna1: Tipo
+         TipoColumna1:
         Columna2: Tipo
         ...
 

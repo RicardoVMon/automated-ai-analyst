@@ -196,3 +196,21 @@ def visualizar_clustering(df, clusters_kmeans, clusters_dbscan, columnas, nombre
             fig = px.scatter(df_vis, x=columnas[0], y=columnas[1] if len(columnas) > 1 else columnas[0], 
                            color='DBSCAN', title="DBSCAN Clusters")
         st.plotly_chart(fig, use_container_width=True)
+
+
+def agregar_o_actualizar_insight_final(nombre, vars_clustering, insights_ia):
+    if 'insights_finales' not in st.session_state:
+        st.session_state['insights_finales'] = []
+    # Convertir variables a tupla ordenada para comparación
+    vars_tuple = tuple(sorted(vars_clustering))
+    # Buscar si ya existe
+    for insight in st.session_state['insights_finales']:
+        if insight['archivo'] == nombre and insight['variables'] == vars_tuple:
+            insight['insight'] = insights_ia
+            return
+    # Si no existe, agregar
+    st.session_state['insights_finales'].append({
+        "archivo": nombre,
+        "variables": vars_tuple,
+        "insight": insights_ia
+})

@@ -1,5 +1,8 @@
 import streamlit as st
 import time
+from modules.settings import cargar_api_gemini
+
+model = cargar_api_gemini()
 
 def inicializar_chat():
     """Inicializa el chat con el contexto de los insights"""
@@ -14,7 +17,10 @@ def inicializar_chat():
 
 def preparar_contexto_inicial():
     """Prepara el contexto inicial con los insights"""
-    insights_texto = st.session_state.get('insights_finales', '')
+    insights_texto = "\n\n".join(
+    f"Archivo: {i['archivo']} | Variables: {', '.join(i['variables'])}\n{i['insight']}"
+    for i in st.session_state.get('insights_finales', [])
+)
     
     contexto_inicial = f"""
     Eres un analista de datos experto que ha realizado un análisis completo de clustering y detección de outliers. 
@@ -39,12 +45,7 @@ def preparar_contexto_inicial():
 def enviar_mensaje_inicial():
     """Envía el contexto inicial al modelo y obtiene el saludo"""
     try:
-        if st.session_state.gemini_chat is None:
-            model = st.session_state.get('model')
-            if model is None:
-                return False, "No se pudo cargar el modelo Gemini."
-            
-            st.session_state.gemini_chat = model.start_chat(history=[])
+        st.session_state.gemini_chat = model.start_chat(history=[]) # *** esto representa el chat
         
         # Enviar contexto inicial
         contexto = preparar_contexto_inicial()
@@ -53,7 +54,6 @@ def enviar_mensaje_inicial():
         {contexto}
         
         Ahora saluda al usuario y pregúntale qué aspecto del análisis le gustaría explorar. 
-        Menciona brevemente que tienes información sobre clusters, correlaciones y outliers disponible.
         """
         
         response = st.session_state.gemini_chat.send_message(mensaje_inicial)
