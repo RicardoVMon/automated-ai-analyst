@@ -21,11 +21,7 @@ def cargar_api_gemini():
         - None si ocurre algún error durante la inicialización.
     """
     try:
-        if 'model' not in st.session_state:  # Si el modelo no está en el estado de sesión
-            genai.configure(api_key=st.session_state['gemini_api_key'])  # Configura la API key de Google
-            st.session_state['model'] = genai.GenerativeModel("gemini-1.5-pro")  # Crea y guarda el modelo en sesión
-            return st.session_state['model']  # Retorna el modelo
-        else:
-            return st.session_state['model']  # Si ya existe, retorna el modelo existente
+        genai.configure(api_key=st.session_state['gemini_api_key'])  # Configura la API key de Google
+        return genai.GenerativeModel("gemini-1.5-pro")  # Crea y guarda el modelo en sesión
     except Exception as e:  # Si ocurre algún error
         return None  # Retorna None en caso de error
