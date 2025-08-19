@@ -1,6 +1,4 @@
 import streamlit as st  # Importa Streamlit para el manejo de estado de sesión y mensajes
-import os  # Importa os para acceder a variables de entorno
-from dotenv import load_dotenv  # Importa load_dotenv para cargar variables de entorno desde un archivo .env
 import google.generativeai as genai  # Importa la librería de Google Generative AI
 
 def cargar_api_gemini():
